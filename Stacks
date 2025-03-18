@@ -1,0 +1,22 @@
+'''Stack works on the concept of first in first out'''
+
+class Stack():
+
+    def __init__(self):
+        self.items = []
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        return self.items.pop() # returning is necessary
+    
+    def is_empty(self):
+        return self.items == [] # Will check if the list is empty or not and return T/F.
+    
+    def peek(self):
+        if not self.is_empty():
+            return self.items[-1]
+    
+    def get_stack(self):
+        return self.items
