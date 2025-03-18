@@ -1,0 +1,381 @@
+'''
+                                        SEARCHING ALGORITHMS
+'''
+
+'''
+                                            LINEAR SEARCH
+'''
+
+def linSearch(li,ele):
+    n = len(li)
+    index = None
+    i = 0
+    print("n: ", n,"  index: ", index,"  i: ", i)
+    while i < n:
+        print("element: ", ele,"  li[",i,"]: ", li[i])
+        if ele == li[i]:
+            return print("The element is present in the list at the index: ",i)
+        i += 1
+    else:
+        return print("The element was not found in the list")
+
+li = [3,2,4,5,7,1,8]
+ele = 4
+
+linSearch(li,ele)
+
+
+
+
+'''
+                                            BINARY SEARCH
+''' 
+
+def BinSearch_int(li, ele):
+    li.sort()
+    l = 0
+    r = len(li)
+    m = (l+r)//2
+
+    while l <= r:
+        if ele == li[m]:
+            return m
+        elif ele > li[m]:
+            l = m + 1
+            m = (l + r)//2
+            continue
+        else:
+            r = m - 1
+            m = (l + r)//2
+            continue
+    else:
+        return -1
+
+
+list = [int(i) for i in input().split(" ")]
+element = int(input("Enter the element to be searched here: "))
+print(BinSearch_int(list, element))
+
+
+
+
+'''
+                                    INTERPOLATION SEARCH
+'''
+
+def interpolation_search(arr, target):
+    low = 0
+    high = len(arr) - 1
+
+    while low <= high and arr[low] <= target <= arr[high]:
+        pos = low + ((target - arr[low]) * (high - low)) // (arr[high] - arr[low])
+
+        if arr[pos] == target:
+            return pos
+        elif arr[pos] < target:
+            low = pos + 1
+        else:
+            high = pos - 1
+
+    return -1
+
+# Example usage
+sorted_array = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+target_element = 60
+
+result = interpolation_search(sorted_array, target_element)
+
+if result != -1:
+    print(f"Element {target_element} found at index {result}")
+else:
+    print(f"Element {target_element} not found in the array")
+
+
+
+
+'''
+                                        HASHING
+'''
+
+def simple_hash(key, table_size):
+    hash_value = 0
+    for char in key:
+        hash_value += ord(char)
+    return hash_value % table_size
+
+# Example usage
+table_size = 10
+key = "hello"
+
+hash_code = simple_hash(key, table_size)
+print(f"The hash code for '{key}' is {hash_code}")
+
+
+
+
+
+'''
+                                    SORTING ALGORITHMS
+'''
+
+'''
+                                            BUBBLE SORT
+'''
+
+def Bubble_Sort(li):
+    n = len(li)
+    for i in range(0,n-1):
+        print(li)
+        for j in range(n-i-1):
+            print(li)
+            if li[j] > li[j+1]:
+                li[j], li[j+1] = li[j+1], li[j]
+            print(li)
+            print()
+        print("End of ", i+1, " Iteration")
+    return li
+
+
+li = [3, 5, 1, 7, 2, 3]
+print(Bubble_Sort(li))
+
+
+
+
+'''
+                                        SELECTION SORT
+'''
+
+def Selection_Sort(list):
+    n = len(list)
+    for i in range(n):
+        min_index = i
+        for j in range(i+1, n):
+            if list[j] < list[min_index]: 
+                min_index = j
+                list[i], list[min_index] = list[min_index], list[i]
+    return list
+
+
+li = [3, 5, 1, 7, 2, 3, 8, 56, 34, 12, 78, 43, 87]
+print(Selection_Sort(li))
+
+
+
+
+'''
+                                            INSERTION SORT
+'''
+
+
+def insertionSort(arr):
+    length = len(arr)
+    for i in range(1, length):
+        temp = arr[i]
+        j = i-1
+        while j > 0 and arr[j] > temp:
+            arr[j+1] = arr[j]
+            j -= 1
+        arr[j] = temp
+
+
+arr = [1, 4, 2, 6, 3, 7, 5, 9, 10, 8]
+insertionSort(arr)
+print(arr)
+
+
+'''
+                                                QUICK SORT
+'''
+
+
+# Function to find the partition position
+def Partition(array, low, high):
+
+    # Choose the rightmost element as pivot
+    pivot = array[high]
+
+    # Pointer for greater element
+    i = low - 1
+
+    # Traverse through all elements
+    # compare each element with pivot
+    for j in range(low, high):
+
+        if array[j] <= pivot:
+
+            # If element smaller than pivot is found
+            # swap it with the greater element pointed by i
+            i = i + 1
+            # Swapping element at i with element at j
+            (array[i], array[j]) = (array[j], array[i])
+    
+    # Swap the pivot element with the greater element specified by i
+    (array[i + 1], array[high]) = (array[high], array[i + 1])
+
+    # Return the position from where partition is done
+    return i + 1
+
+
+# Function to perform quicksort
+def quicksort(array, low, high):
+    if low < high:
+
+        # Find pivot element such that
+        # element smaller than pivot are on the left
+        # element greater than pivot are on the right
+        pi = Partition(array, low, high)
+
+        # Recursive call on the left of pivot
+        quicksort(array, low, pi - 1)
+
+        # Recursive call on the right of pivot
+        quicksort(array, pi + 1, high)
+
+
+
+
+array = [10, 7, 8, 2, 1, 5]
+N = len(array)
+
+quicksort(array, 0, N - 1)
+print('Sorted array:')
+print(array)
+
+
+'''
+                                            MERGE SORT
+'''
+
+
+def mergeSort(array):
+    if len(array) > 1:
+
+        #  r is the point where the array is divided into two subarrays
+        r = len(array)//2
+        L = array[:r]
+        M = array[r:]
+
+        # Sort the two halves
+        mergeSort(L)
+        mergeSort(M)
+
+        i = j = k = 0
+
+        # Until we reach either end of either L or M, pick larger among
+        # elements L and M and place them in the correct position at A[p..r]
+        while i < len(L) and j < len(M):
+            if L[i] < M[j]:
+                array[k] = L[i]
+                i += 1
+            else:
+                array[k] = M[j]
+                j += 1
+            k += 1
+
+        # When we run out of elements in either L or M,
+        # pick up the remaining elements and put in A[p..r]
+        while i < len(L):
+            array[k] = L[i]
+            i += 1
+            k += 1
+
+        while j < len(M):
+            array[k] = M[j]
+            j += 1
+            k += 1
+
+
+# Print the array
+def printList(array):
+    for i in range(len(array)):
+        print(array[i], end=" ")
+    print()
+
+
+# Driver program
+if __name__ == '__main__':
+    array = [6, 5, 12, 10, 9, 1]
+
+    mergeSort(array)
+
+    print("Sorted array is: ")
+    printList(array)
+
+
+
+
+'''
+                                        HEAP SORT
+'''
+
+def heapify(arr, n, i):
+    largest = i
+    left_child = 2 * i + 1
+    right_child = 2 * i + 2
+
+    if left_child < n and arr[left_child] > arr[largest]:
+        largest = left_child
+
+    if right_child < n and arr[right_child] > arr[largest]:
+        largest = right_child
+
+    if largest != i:
+        arr[i], arr[largest] = arr[largest], arr[i]
+        heapify(arr, n, largest)
+
+def heap_sort(arr):
+    n = len(arr)
+
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(arr, n, i)
+
+    for i in range(n - 1, 0, -1):
+        arr[i], arr[0] = arr[0], arr[i]
+        heapify(arr, i, 0)
+
+# Example usage
+unsorted_array = [12, 11, 13, 5, 6, 7]
+heap_sort(unsorted_array)
+print("Sorted array:", unsorted_array)
+
+
+
+
+'''                                         RADIX SORT
+'''
+
+def counting_sort(arr, exp):
+    n = len(arr)
+    output = [0] * n
+    count = [0] * 10
+
+    for i in range(n):
+        index = arr[i] // exp
+        count[index % 10] += 1
+
+    for i in range(1, 10):
+        count[i] += count[i - 1]
+
+    i = n - 1
+    while i >= 0:
+        index = arr[i] // exp
+        output[count[index % 10] - 1] = arr[i]
+        count[index % 10] -= 1
+        i -= 1
+
+    for i in range(n):
+        arr[i] = output[i]
+
+def radix_sort(arr):
+    max_value = max(arr)
+    exp = 1
+
+    while max_value // exp > 0:
+        counting_sort(arr, exp)
+        exp *= 10
+
+# Example usage
+unsorted_array = [170, 45, 75, 90, 802, 24, 2, 66]
+radix_sort(unsorted_array)
+print("Sorted array:", unsorted_array)
