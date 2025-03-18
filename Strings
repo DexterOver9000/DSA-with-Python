@@ -1,0 +1,220 @@
+'''                                 STRING
+'''
+
+'''Multiline Strings'''
+
+a = '''My
+name is 
+Preet'''
+
+# there is indexing in string.
+# there is negative indexing too
+
+print(a[-1])
+print(a[2])
+
+
+
+
+
+
+
+'''                             HOW STRINGS ARE STORED
+
+if we define (s = "Preet"), now "Preet" is stored somewhere in the memory and the variable "s" stores the reference of "Preet" eg. '250' so if you assign (s = "Rajput") it will not change the "Preet" stored at '250' it will create a new space in memory and then the reference of that will be stored in the variable "s". For smaller strings python reuses the references.
+'''
+
+a = "Preet"
+b = "Preet"
+
+print(id(a)) # both are same
+print(id(b))
+
+
+# Can't change a string using item assignment.
+# a[0] = "p"
+
+
+
+'''CONCATINATION - Concatination can be done using +,+=,*, operators.'''
+
+a += " Prashant" + " Kumar"
+print(a)
+a*=2
+print(a)
+
+
+# Can't add a str and an int
+#a = "preet" + 3
+a = "Preet" + str(3)
+a = a + "3"
+print(a)
+
+
+
+
+'''SLICING OF A STRING - Similar to Array -> [start : end : step/stride]'''
+
+a = "abcdefghij"
+print(a[1:8:2])
+print(a[1:])
+print(a[:5])
+print(a[-10:-6])
+print(a[-8:])
+print(a[:-5])
+print(a[::-1]) # Reversing the String
+print(a[4::-1])
+
+
+
+
+'''ITERATING ON STRINGS'''
+
+for i in a:
+    print(i)
+
+for i in range(len(a)):
+    print(a[i])
+
+i=0
+while i in range(len(a)-1):
+    print(a[i])
+    i+=1
+
+str = "abcdddeefghhhhijjkkklllll"
+count = 0
+
+for i in str:
+    if i == "l":
+        count += 1
+print(count)
+
+
+
+
+'''Using in and not in Operators to identify substrings.'''
+
+str = "Hello"
+flag = False
+
+if "elo" in str:
+    flag = True
+
+if "ell" not in str:
+    flag = True
+
+print(flag)
+
+
+
+
+""" Comparison Operators on Strings -  >, <, >=, <=, ==, !=, etc."""
+
+a = "pk" == "Pk" # Returns True or false
+print(a)
+
+a = "Preet" >= "PREET" # ompared on the bases of ASCII Values.
+print(a)
+
+ 
+
+
+'''Question -> check if the given string is a Palindrome String or not'''
+
+str = input("Enter Your String here: ")
+flag = False
+if str == str[::-1]:
+    flag = True
+print(flag)
+
+
+
+
+
+'''Functions Of Strings'''
+
+
+'''Split Functiion - Returns list'''
+
+str = "My Name is Preet Rajput"
+print(str.split(" ",2)) # this "2" gives the no. times it will split the string
+
+
+'''Replace Function'''
+
+str = str.replace("Rajput","Kumar"'''Here you specify how many rajput to replace''')
+# If mutiple Rajput are present all will be replaced unless specified
+print(str)
+
+
+'''Find Function - Finds the starting index of the substring'''
+
+index = str.find("is ",)
+print(index)
+
+# If multiple present returns first one from left side OR 
+# index = str.find("is ", startingRange, endingRange) finds between these index
+
+
+'''Lower and Upper Function - Changes the case(caps or small) of string.'''
+
+str = str.lower()
+print(str)
+
+
+''' Starts With Function - Returns Boolean'''
+
+boole = str.startswith("My Name")
+print(boole)
+
+
+
+
+
+'''                         Replacing Characters
+'''
+
+str = input("Enter Your String Here: ")
+rep1 = input("Enter The Character to be Replaced: ")
+rep2 = input("Enter The Character to Replace: ")
+
+
+str = str.replace(rep1,rep2)
+print(str)
+
+
+
+
+'''Question - Count Vowels, Consonents, Digits and Special Characters in a String'''
+
+str = "a1!@s123 !#^2#ASds212dsa!@!#32434#SGDhhS$$#"
+
+countV = 0
+countC = 0
+countD = 0
+countSC = 0
+
+for i in str:
+    if "A" <= i <= "Z" or "a" <= i <= "z":
+        if i in ["A","E","I","O","U","a","e","i","o","u"]:
+            countV += 1
+        else:
+            countC += 1
+    elif "0" <= i <= "9":
+        countD += 1
+    else:
+        countSC += 1
+
+print("No. of Vowels are: ",countV)
+print("No. of Consonents are: ",countC)
+print("No. of Digits are: ",countD)
+print("No. of Special Characters are: ",countSC)
+
+
+
+
+
+''' JOIN FUNCTION'''
+
+str = "ab".join(["1","2","3",'4'])
+print(str)
