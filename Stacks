@@ -20,3 +20,71 @@ class Stack():
     
     def get_stack(self):
         return self.items
+
+
+'''
+Using Stack to check if the parentheses are balanced or not.
+Example of balanced parentheses - {[()]()}{}(), ({}){({}({[]}))}
+Example of unbalanced parentheses - {[(](){}), ()[{][][}]
+
+This will be done by adding the parentheses to the stack when it is encountered.
+When an ending parentheses is encoutered it is then matched with the top element in the stack (using pop).
+If no exception occur then the parentheses are balanced otherwise not.
+'''
+
+# from C1_Stacks import Stack
+
+def is_match(p1, p2):
+    if p1 == "(" and p2 == ")":
+        return True
+    elif p1 == "{" and p2 == "}":
+        return True
+    elif p1 == "[" and p2 == "]":
+        return True
+    else:
+        return False
+
+def paren_balanced(string):
+    s = Stack()
+    is_balanced = True
+    index = 0
+
+    while index < len(string) and is_balanced:
+        paren = string[index]
+        if paren in "({[":
+             s.push(paren)
+        else:
+            if s.is_empty():
+                is_balanced = False
+            else:
+                top = s.pop()
+                if not is_match(top, paren):
+                    is_balanced = False
+        index += 1
+    if s.is_empty() and is_balanced:
+        return True
+    else:
+        return False
+    
+print(paren_balanced("({})([)]"))
+
+
+
+
+'''Using Stack to convert a number to binary'''
+
+def convert_to_binary(num):
+    s = Stack()
+
+    while num > 0:
+        dec = num % 2
+        s.push(dec)
+        num //= 2
+
+    binary_no = ""
+    while not s.is_empty():
+        binary_no += str(s.pop())
+    
+    return binary_no
+
+print(convert_to_binary(242))
