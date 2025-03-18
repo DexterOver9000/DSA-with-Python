@@ -1,0 +1,596 @@
+'''
+                                                        BINARY TREE
+'''
+
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+class BinaryTree:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key):
+        self.root = self._insert_recursively(self.root, key)
+
+    def _insert_recursively(self, current_node, key):
+        if current_node is None:
+            return Node(key)
+        if key < current_node.key:
+            current_node.left = self._insert_recursively(current_node.left, key)
+        elif key > current_node.key:
+            current_node.right = self._insert_recursively(current_node.right, key)
+        return current_node
+
+    def search(self, key):
+        return self._search_recursively(self.root, key)
+
+    def _search_recursively(self, current_node, key):
+        if current_node is None or current_node.key == key:
+            return current_node
+        if key < current_node.key:
+            return self._search_recursively(current_node.left, key)
+        return self._search_recursively(current_node.right, key)
+
+    def inorder_traversal(self):
+        return self._inorder_recursively(self.root)
+
+    def _inorder_recursively(self, current_node):
+        if current_node is not None:
+            self._inorder_recursively(current_node.left)
+            print(current_node.key, end=" ")
+            self._inorder_recursively(current_node.right)
+
+# Example usage:
+if __name__ == "__main__":
+    tree = BinaryTree()
+    tree.insert(5)
+    tree.insert(3)
+    tree.insert(8)
+    tree.insert(1)
+    tree.insert(4)
+    tree.insert(7)
+    tree.insert(9)
+
+    print("Inorder Traversal:")
+    tree.inorder_traversal()  # Output: 1 3 4 5 7 8 9
+
+    # Search for a key
+    key_to_search = 4
+    node_found = tree.search(key_to_search)
+    if node_found:
+        print(f"\nFound {key_to_search} in the tree.")
+    else:
+        print(f"\n{key_to_search} not found in the tree.")
+
+
+'''
+                                                        BINARY SEARCH TREE(BST)
+'''
+
+
+
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key):
+        self.root = self._insert_recursively(self.root, key)
+
+    def _insert_recursively(self, node, key):
+        if node is None:
+            return Node(key)
+
+        if key < node.key:
+            node.left = self._insert_recursively(node.left, key)
+        elif key > node.key:
+            node.right = self._insert_recursively(node.right, key)
+
+        return node
+
+    def search(self, key):
+        return self._search_recursively(self.root, key)
+
+    def _search_recursively(self, node, key):
+        if node is None or node.key == key:
+            return node
+
+        if key < node.key:
+            return self._search_recursively(node.left, key)
+        else:
+            return self._search_recursively(node.right, key)
+
+    def inorder_traversal(self):
+        result = []
+        self._inorder_recursively(self.root, result)
+        return result
+
+    def _inorder_recursively(self, node, result):
+        if node:
+            self._inorder_recursively(node.left, result)
+            result.append(node.key)
+            self._inorder_recursively(node.right, result)
+
+
+# Example usage:
+if __name__ == "__main__":
+    bst = BinarySearchTree()
+    bst.insert(10)
+    bst.insert(5)
+    bst.insert(15)
+    bst.insert(3)
+    bst.insert(7)
+
+    print("In-order traversal:", bst.inorder_traversal())
+    # Output: In-order traversal: [3, 5, 7, 10, 15]
+
+    print("Searching for key 5:", bst.search(5))
+    # Output: Searching for key 5: <__main__.Node object at 0x...>
+
+    print("Searching for key 12:", bst.search(12))
+    # Output: Searching for key 12: None
+
+
+
+'''
+                                                                AVL TREE
+'''
+
+
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+        self.height = 1
+
+class AVLTree:
+    def __init__(self):
+        self.root = None
+
+    def _height(self, node):
+        if node is None:
+            return 0
+        return node.height
+
+    def _update_height(self, node):
+        node.height = 1 + max(self._height(node.left), self._height(node.right))
+
+    def _get_balance(self, node):
+        if node is None:
+            return 0
+        return self._height(node.left) - self._height(node.right)
+
+    def _rotate_left(self, z):
+        y = z.right
+        T2 = y.left
+
+        y.left = z
+        z.right = T2
+
+        self._update_height(z)
+        self._update_height(y)
+
+        return y
+
+    def _rotate_right(self, y):
+        x = y.left
+        T2 = x.right
+
+        x.right = y
+        y.left = T2
+
+        self._update_height(y)
+        self._update_height(x)
+
+        return x
+
+    def insert(self, key):
+        self.root = self._insert_recursively(self.root, key)
+
+    def _insert_recursively(self, node, key):
+        if node is None:
+            return Node(key)
+
+        if key < node.key:
+            node.left = self._insert_recursively(node.left, key)
+        elif key > node.key:
+            node.right = self._insert_recursively(node.right, key)
+        else:
+            return node  # Duplicate keys not allowed in AVL trees
+
+        self._update_height(node)
+
+        balance = self._get_balance(node)
+
+        # Perform rotations if the node is unbalanced
+        if balance > 1:
+            if key < node.left.key:
+                return self._rotate_right(node)
+            else:
+                node.left = self._rotate_left(node.left)
+                return self._rotate_right(node)
+        if balance < -1:
+            if key > node.right.key:
+                return self._rotate_left(node)
+            else:
+                node.right = self._rotate_right(node.right)
+                return self._rotate_left(node)
+
+        return node
+
+    def delete(self, key):
+        self.root = self._delete_recursively(self.root, key)
+
+    def _delete_recursively(self, node, key):
+        if node is None:
+            return node
+
+        if key < node.key:
+            node.left = self._delete_recursively(node.left, key)
+        elif key > node.key:
+            node.right = self._delete_recursively(node.right, key)
+        else:
+            if node.left is None:
+                temp = node.right
+                node = None
+                return temp
+            elif node.right is None:
+                temp = node.left
+                node = None
+                return temp
+
+            temp = self._get_min_node(node.right)
+            node.key = temp.key
+            node.right = self._delete_recursively(node.right, temp.key)
+
+        if node is None:
+            return node
+
+        self._update_height(node)
+
+        balance = self._get_balance(node)
+
+        # Perform rotations if the node is unbalanced
+        if balance > 1:
+            if self._get_balance(node.left) >= 0:
+                return self._rotate_right(node)
+            else:
+                node.left = self._rotate_left(node.left)
+                return self._rotate_right(node)
+        if balance < -1:
+            if self._get_balance(node.right) <= 0:
+                return self._rotate_left(node)
+            else:
+                node.right = self._rotate_right(node.right)
+                return self._rotate_left(node)
+
+        return node
+
+    def _get_min_node(self, node):
+        current = node
+        while current.left is not None:
+            current = current.left
+        return current
+
+    def inorder_traversal(self):
+        result = []
+        self._inorder_recursively(self.root, result)
+        return result
+
+    def _inorder_recursively(self, node, result):
+        if node:
+            self._inorder_recursively(node.left, result)
+            result.append(node.key)
+            self._inorder_recursively(node.right, result)
+
+# Example usage:
+if __name__ == "__main__":
+    avl_tree = AVLTree()
+    avl_tree.insert(10)
+    avl_tree.insert(20)
+    avl_tree.insert(30)
+    avl_tree.insert(40)
+    avl_tree.insert(50)
+    avl_tree.insert(25)
+
+    print("In-order traversal:", avl_tree.inorder_traversal())
+    # Output: In-order traversal: [10, 20, 25, 30, 40, 50]
+
+    avl_tree.delete(30)
+
+    print("In-order traversal after deletion:", avl_tree.inorder_traversal())
+    # Output: In-order traversal after deletion: [10, 20, 25, 40, 50]
+
+
+'''
+                                                            RED-BLACK TREE
+'''
+
+
+class Node:
+    def __init__(self, key, color="RED"):
+        self.key = key
+        self.left = None
+        self.right = None
+        self.parent = None
+        self.color = color
+
+class RedBlackTree:
+    def __init__(self):
+        self.NIL_LEAF = Node(None, color="BLACK")
+        self.root = self.NIL_LEAF
+
+    def _left_rotate(self, x):
+        y = x.right
+        x.right = y.left
+        if y.left != self.NIL_LEAF:
+            y.left.parent = x
+        y.parent = x.parent
+        if x.parent is None:
+            self.root = y
+        elif x == x.parent.left:
+            x.parent.left = y
+        else:
+            x.parent.right = y
+        y.left = x
+        x.parent = y
+
+    def _right_rotate(self, y):
+        x = y.left
+        y.left = x.right
+        if x.right != self.NIL_LEAF:
+            x.right.parent = y
+        x.parent = y.parent
+        if y.parent is None:
+            self.root = x
+        elif y == y.parent.left:
+            y.parent.left = x
+        else:
+            y.parent.right = x
+        x.right = y
+        y.parent = x
+
+    def insert(self, key):
+        new_node = Node(key)
+        new_node.left = self.NIL_LEAF
+        new_node.right = self.NIL_LEAF
+        new_node.parent = None
+        new_node.color = "RED"
+
+        y = None
+        x = self.root
+
+        while x != self.NIL_LEAF:
+            y = x
+            if new_node.key < x.key:
+                x = x.left
+            else:
+                x = x.right
+
+        new_node.parent = y
+        if y is None:
+            self.root = new_node
+        elif new_node.key < y.key:
+            y.left = new_node
+        else:
+            y.right = new_node
+
+        if new_node.parent is None:
+            new_node.color = "BLACK"
+            return
+
+        if new_node.parent.parent is None:
+            return
+
+        self._insert_fixup(new_node)
+
+    def _insert_fixup(self, new_node):
+        while new_node.parent.color == "RED":
+            if new_node.parent == new_node.parent.parent.left:
+                y = new_node.parent.parent.right
+                if y.color == "RED":
+                    new_node.parent.color = "BLACK"
+                    y.color = "BLACK"
+                    new_node.parent.parent.color = "RED"
+                    new_node = new_node.parent.parent
+                else:
+                    if new_node == new_node.parent.right:
+                        new_node = new_node.parent
+                        self._left_rotate(new_node)
+                    new_node.parent.color = "BLACK"
+                    new_node.parent.parent.color = "RED"
+                    self._right_rotate(new_node.parent.parent)
+            else:
+                y = new_node.parent.parent.left
+                if y.color == "RED":
+                    new_node.parent.color = "BLACK"
+                    y.color = "BLACK"
+                    new_node.parent.parent.color = "RED"
+                    new_node = new_node.parent.parent
+                else:
+                    if new_node == new_node.parent.left:
+                        new_node = new_node.parent
+                        self._right_rotate(new_node)
+                    new_node.parent.color = "BLACK"
+                    new_node.parent.parent.color = "RED"
+                    self._left_rotate(new_node.parent.parent)
+            if new_node == self.root:
+                break
+        self.root.color = "BLACK"
+
+    def inorder_traversal(self):
+        result = []
+        self._inorder_recursively(self.root, result)
+        return result
+
+    def _inorder_recursively(self, node, result):
+        if node != self.NIL_LEAF:
+            self._inorder_recursively(node.left, result)
+            result.append(node.key)
+            self._inorder_recursively(node.right, result)
+
+# Example usage:
+if __name__ == "__main__":
+    rbt = RedBlackTree()
+    rbt.insert(55)
+    rbt.insert(40)
+    rbt.insert(65)
+    rbt.insert(60)
+    rbt.insert(75)
+
+    print("In-order traversal:", rbt.inorder_traversal())
+    # Output: In-order traversal: [40, 55, 60, 65, 75]
+
+
+'''
+                                                                HEAP
+'''
+
+
+class MinHeap:
+    def __init__(self):
+        self.heap_list = [0]
+        self.current_size = 0
+
+    def _parent(self, i):
+        return i // 2
+
+    def _left_child(self, i):
+        return 2 * i
+
+    def _right_child(self, i):
+        return 2 * i + 1
+
+    def _swap(self, i, j):
+        self.heap_list[i], self.heap_list[j] = self.heap_list[j], self.heap_list[i]
+
+    def insert(self, key):
+        self.heap_list.append(key)
+        self.current_size += 1
+        self._heapify_up(self.current_size)
+
+    def _heapify_up(self, i):
+        while i // 2 > 0:
+            if self.heap_list[i] < self.heap_list[self._parent(i)]:
+                self._swap(i, self._parent(i))
+            i = self._parent(i)
+
+    def extract_min(self):
+        if self.current_size == 0:
+            return None
+
+        min_val = self.heap_list[1]
+        self.heap_list[1] = self.heap_list[self.current_size]
+        self.current_size -= 1
+        self.heap_list.pop()
+        self._heapify_down(1)
+        return min_val
+
+    def _heapify_down(self, i):
+        while (i * 2) <= self.current_size:
+            min_child_idx = self._get_min_child(i)
+            if self.heap_list[i] > self.heap_list[min_child_idx]:
+                self._swap(i, min_child_idx)
+            i = min_child_idx
+
+    def _get_min_child(self, i):
+        if i * 2 + 1 > self.current_size:
+            return i * 2
+        else:
+            if self.heap_list[i * 2] < self.heap_list[i * 2 + 1]:
+                return i * 2
+            else:
+                return i * 2 + 1
+
+# Example usage:
+if __name__ == "__main__":
+    heap = MinHeap()
+    heap.insert(5)
+    heap.insert(10)
+    heap.insert(3)
+    heap.insert(7)
+    heap.insert(1)
+
+    print("Extracted min:", heap.extract_min())  # Output: Extracted min: 1
+    print("Extracted min:", heap.extract_min())  # Output: Extracted min: 3
+
+
+'''                                                     Max Heap
+'''
+
+class MaxHeap:
+    def __init__(self):
+        self.heap_list = [0]
+        self.current_size = 0
+
+    def _parent(self, i):
+        return i // 2
+
+    def _left_child(self, i):
+        return 2 * i
+
+    def _right_child(self, i):
+        return 2 * i + 1
+
+    def _swap(self, i, j):
+        self.heap_list[i], self.heap_list[j] = self.heap_list[j], self.heap_list[i]
+
+    def insert(self, key):
+        self.heap_list.append(key)
+        self.current_size += 1
+        self._heapify_up(self.current_size)
+
+    def _heapify_up(self, i):
+        while i // 2 > 0:
+            if self.heap_list[i] > self.heap_list[self._parent(i)]:
+                self._swap(i, self._parent(i))
+            i = self._parent(i)
+
+    def extract_max(self):
+        if self.current_size == 0:
+            return None
+
+        max_val = self.heap_list[1]
+        self.heap_list[1] = self.heap_list[self.current_size]
+        self.current_size -= 1
+        self.heap_list.pop()
+        self._heapify_down(1)
+        return max_val
+
+    def _heapify_down(self, i):
+        while (i * 2) <= self.current_size:
+            max_child_idx = self._get_max_child(i)
+            if self.heap_list[i] < self.heap_list[max_child_idx]:
+                self._swap(i, max_child_idx)
+            i = max_child_idx
+
+    def _get_max_child(self, i):
+        if i * 2 + 1 > self.current_size:
+            return i * 2
+        else:
+            if self.heap_list[i * 2] > self.heap_list[i * 2 + 1]:
+                return i * 2
+            else:
+                return i * 2 + 1
+
+# Example usage:
+if __name__ == "__main__":
+    heap = MaxHeap()
+    heap.insert(5)
+    heap.insert(10)
+    heap.insert(3)
+    heap.insert(7)
+    heap.insert(1)
+
+    print("Extracted max:", heap.extract_max())  # Output: Extracted max: 10
+    print("Extracted max:", heap.extract_max())  # Output: Extracted max: 7
