@@ -1,0 +1,169 @@
+'''
+                                                ARRAY
+'''
+
+'''
+                                    How to Use Arrays in Python
+    
+1-  By using import array at the top of the file.
+    This includes the module array. You would then go on to create an array using array.array().
+
+    import array
+    #how you would create an array
+    array.array()
+
+    
+2-  Instead of having to type array.array() all the time, you could use import array as arr at the top of the file,
+    instead of import array alone. You would then create an array by typing arr.array().
+    The arr acts as an alias name, with the array constructor then immediately following it.
+
+    import array as arr
+    #how you would create an array
+    arr.array()
+
+3-  Lastly, you could also use from array import *, with * importing all the functionalities available.
+    You would then create an array by writing the array() constructor alone.
+
+    from array import *
+    #how you would create an array
+    array()
+
+'''
+
+
+'''
+                                            Array Methods
+
+Python has a set of built-in methods that you can use on lists/arrays.
+
+Method	                    Description
+append()	    Adds an element at the end of the list
+clear()	        Removes all the elements from the list
+copy()	        Returns a copy of the list
+count()	        Returns the number of elements with the specified value
+extend()	    Add the elements of a list (or any iterable), to the end of the current list
+index()	        Returns the index of the first element with the specified value
+insert()	    Adds an element at the specified position
+pop()	        Removes the element at the specified position
+remove()	    Removes the first item with the specified value
+reverse()	    Reverses the order of the list
+sort()	        Sorts the list
+'''
+
+
+
+# The general syntax for creating an array looks like this:
+# variable_name = array(typecode,[elements])
+
+# Tying everything together, here is an example of how you would define an array in Python:
+
+import array as arr 
+
+numbers = arr.array('i',[10,20,30])
+print(numbers)
+
+
+
+# To find out the exact number of elements contained in an array, use the built-in len() method.
+
+print(len(numbers))
+
+
+
+# Here is how you would access each individual element in an array:
+
+print(numbers[0]) # gets the 1st element
+print(numbers[1]) # gets the 2nd element
+print(numbers[2]) # gets the 3rd element
+print()
+
+
+
+# Here is how you would get each item in an array using that method:
+
+print(numbers[-1]) #gets last item
+print(numbers[-2]) #gets second to last item
+print(numbers[-3]) #gets first item
+print()
+
+
+
+# How to Search Through an Array in Python
+
+print(numbers.index(10))
+print()
+
+
+
+# If there is more than one element with the same value, the index of the first instance of the value will be returned:
+
+#search for the index of the value 10
+#will return the index number of the first instance of the value 10
+print(numbers.index(10))
+print()
+
+
+
+# How to Loop through an Array in Python
+
+
+for number in numbers:
+    print(number)
+
+
+
+# You could also use the range() function, and pass the len() method as its parameter. This would give the same result as above:
+
+values = arr.array('i',[10,20,30])
+
+#prints each individual value in the array
+for value in range(len(values)):
+    print(values[value])
+
+
+
+# How to Slice an Array in Python
+
+# To access a specific range of values inside the array, use the slicing operator, which is a colon :.
+# When using the slicing operator and you only include one value, the counting starts from 0 by default.
+# It gets the first item, and goes up to but not including the index number you specify.
+
+print(numbers[:2])
+
+
+#change the first element
+#change it from having a value of 10 to having a value of 40
+numbers[0] = 40
+print(numbers)
+
+
+
+#add the integer 40 to the end of numbers
+numbers.append(40)
+print(numbers)
+
+
+
+#add the float 40.0 to the end of numbers
+# numbers.append(40.0)
+
+
+#add the integers 40,50,60 to the end of numbers
+#The numbers need to be enclosed in square brackets
+
+numbers.extend([40,50,60])
+print(numbers)
+
+
+#add the integer 40 in the first position
+#remember indexing starts at 0
+
+numbers.insert(0,40)
+print(numbers)
+
+
+# Removing the first instance of a number
+
+
+numbers.remove(10)
+print(numbers)
